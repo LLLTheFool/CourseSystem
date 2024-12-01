@@ -3,7 +3,8 @@ import Home from '../views/Home.vue'
 import LoginPage from '../views/LoginPage.vue';
 import StudentGroup from '../views/StudentGroup.vue';
 import StudentReport from '../views/StudentReport.vue';
-
+import gc from '../views/TeacherGroup.vue'
+import rs from '../views/TeacherReport.vue' 
 import Test from '../views/Test.vue';
 
 const routes = [
@@ -31,7 +32,17 @@ const routes = [
     path: '/test',
     name: 'Test',
     component: Test
-  }
+  },
+  {
+    path: '/teachergroup', // 路由路径
+    name: 'TeacherGroup',
+    component: gc // 组件对应路由
+  },
+  {
+    path: '/teacherreport', // 路由路径
+    name: 'TeacherReport',
+    component: rs // 组件对应路由
+  },
 ];
 
 const router = createRouter({ 
