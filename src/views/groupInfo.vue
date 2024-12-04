@@ -1,19 +1,9 @@
 <template>
     <div class="container" id="app" v-show="!(path === '/login')">
-        <div class="box1">
-            <img src="../components/icons/Logo.jpg">
-            <div class="title">课程管理系统</div>
-            <el-button @click.prevent="GoToLogin">登录</el-button>
-        </div>
+       
         <div class="line"></div>
         <div class="box2">
-            <div class="left">
-                <el-button class="square" @click="GoHome">首页</el-button>
-                <el-button class="square" @click="GoToPublishResource">资源发布</el-button>
-                <el-button class="square" @click="GoToManageStudent">学生管理</el-button>
-                <el-button class="square" @click="GoToStudentGroup">学生分组情况</el-button>
-                <el-button class="square" @click="GoToStudentReport">学生汇报时间</el-button>
-            </div>
+            
             <div class="right">
                 <el-button @click="dialogTableVisible = true">第1组</el-button>
                 <el-button @click="dialogTableVisible = true">第2组</el-button>
