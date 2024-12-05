@@ -41,7 +41,7 @@
                 <input
                   type="text"
                   v-model="group.name"
-                  placeholder="请输入组名"
+                  placeholder=""
                   :disabled="group.isJoined"
                 />
               </div>
@@ -52,7 +52,7 @@
                 <input
                   type="text"
                   v-model="group.number"
-                  placeholder="请输入组号"
+                  placeholder=""
                   :disabled="group.isJoined"
                 />
               </div>
@@ -63,7 +63,7 @@
                 <input
                   type="number"
                   v-model="group.count"
-                  placeholder="请输入人数"
+                  placeholder=""
                   :disabled="group.isJoined"
                 />
               </div>
@@ -252,28 +252,31 @@
     transition: transform 0.3s ease;
     position: absolute; /* 绝对定位，确保组容器可以自由定位 */
     top: 50px; /* 距离容器顶部50px */
-    right: 20px; /* 距离容器右边20px */
+    right: 40px; /* 距离容器右边20px */
   }
   
   .group-container.created {
-    transform: translateX(-670%);
+    transform: translateX(-650%);
   }
   
   .group-info {
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    height: 180px;
   }
   
   .row {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
   }
   
   input {
     max-width: 100px;
     width: 100%;
+    height: 25px;
   }
   
   /* 禁用输入框样式 */
@@ -284,19 +287,27 @@
   
   /* 按钮样式 */
   button {
-    padding: 10px;
+    padding: 5px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+
+    
   }
   
   .join-button {
     background-color: #008cba;
     color: white;
+    margin: 0 auto; /* 水平方向 margin 自动分配，实现水平居中 */
+    width:75px;
+    height: 35px;
   }
   
   .join-button:hover {
     background-color: #005f6b;
+    margin: 0 auto; /* 水平方向 margin 自动分配，实现水平居中 */
+    width:75px;
+
   }
   
   button:disabled {
