@@ -5,7 +5,8 @@ import StudentGroup from '../views/StudentGroup.vue';
 import StudentReport from '../views/StudentReport.vue';
 import gc from '../views/TeacherGroup.vue'
 import rs from '../views/TeacherReport.vue' 
-import Test from '../views/Test.vue';
+import Test from '../views/Test.vue'
+import TeacherResource from '../views/teacher_resource.vue';
 
 const routes = [
   {
@@ -43,6 +44,11 @@ const routes = [
     name: 'TeacherReport',
     component: rs // 组件对应路由
   },
+  {
+    path: '/teacherresource',
+    name: 'TeacherResource',
+    component: TeacherResource
+  }
 ];
 
 const router = createRouter({ 
