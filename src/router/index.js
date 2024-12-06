@@ -6,7 +6,7 @@ import StudentReport from '../views/StudentReport.vue';
 import gc from '../views/TeacherGroup.vue'
 import rs from '../views/TeacherReport.vue' 
 import Test from '../views/Test.vue';
-
+import wp from '../views/WorkPackge.vue'; 
 const routes = [
   {
     path: '/',
@@ -43,6 +43,11 @@ const routes = [
     name: 'TeacherReport',
     component: rs // 组件对应路由
   },
+  {
+    path: '/workpackge', // 路由路径
+    name: 'WorkPackge',
+    component: wp // 组件对应路由
+  }
 ];
 
 const router = createRouter({ 

@@ -13,8 +13,6 @@
                 <el-button class="square" @click="GoToManageStudent">学生管理</el-button>
                 <el-button class="square" @click="GoToStudentGroup">教师分组情况</el-button>
           <el-button class="square" @click="GoToStudentReport">教师汇报时间</el-button>
-          <el-button class="square" @click="GoToTeacherReport">学生汇报时间</el-button>
-          <el-button class="square" @click="GoToTeacherGroup">学生分组选择</el-button>
             </div>
             <div class="right">
                 <el-button @click="dialogTableVisible = true">第1组</el-button>

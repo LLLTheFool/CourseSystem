@@ -33,6 +33,9 @@ export default{
         GoToTeacherGroup(){
             this.$router.push({ name: 'TeacherGroup' }); //
         },
+        GoToWorkPackge(){
+            this.$router.push({ name: 'WorkPackge' }); //
+        },
     }
 }
 </script>
@@ -53,8 +56,6 @@ export default{
                 <el-button class="square" @click="GoToManageStudent">学生管理</el-button>
                 <el-button class="square" @click="GoToStudentGroup">教师分组情况</el-button>
           <el-button class="square" @click="GoToStudentReport">教师汇报时间</el-button>
-          <el-button class="square" @click="GoToTeacherReport">学生汇报时间</el-button>
-          <el-button class="square" @click="GoToTeacherGroup">学生分组选择</el-button>
             </div>
             <div class="right">
                 <label>主页</label>

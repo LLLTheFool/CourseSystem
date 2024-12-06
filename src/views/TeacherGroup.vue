@@ -14,12 +14,10 @@
         <!-- 左侧导航栏 -->
         <div class="left">
           <el-button class="square" @click="GoHome">首页</el-button>
-          <el-button class="square" @click="GoToPublishResource">资源发布</el-button>
-          <el-button class="square" @click="GoToManageStudent">学生管理</el-button>
-          <el-button class="square" @click="GoToStudentGroup">教师分组情况</el-button>
-          <el-button class="square" @click="GoToStudentReport">教师汇报时间</el-button>
-          <el-button class="square" @click="GoToTeacherReport">学生汇报时间</el-button>
-          <el-button class="square" @click="GoToTeacherGroup">学生分组选择</el-button>
+          <el-button class="square" @click="GoToPublishResource">查看资源</el-button>
+          <el-button class="square" @click="GoToTeacherGroup">分组选择</el-button>
+          <el-button class="square" @click="GoToTeacherReport">汇报时间</el-button>
+          <el-button class="square" @click="GoToStudentGroup">项目管理系统</el-button>
         </div>
   
         <!-- 右侧内容区域：组容器和加号按钮 -->
@@ -209,6 +207,10 @@
         font-weight: bold;
 
     }
+    .square:active {
+    background-color: blue; /* 将背景颜色设置为蓝色，你也可以替换为你想要的具体蓝色色值，比如 #008cba 等 */
+    color: white; /* 可以按需设置文字颜色，让文字显示更清晰，这里设置为白色 */
+}
     .square label{
         padding: 10px;
     }
