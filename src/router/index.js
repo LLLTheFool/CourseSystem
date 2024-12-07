@@ -7,6 +7,7 @@ import gc from '../views/TeacherGroup.vue'
 import rs from '../views/TeacherReport.vue' 
 import Test from '../views/Test.vue'
 import TeacherResource from '../views/teacher_resource.vue';
+import StuResource from '../views/stuCheckResource.vue';
 
 const routes = [
   {
@@ -48,6 +49,11 @@ const routes = [
     path: '/teacherresource',
     name: 'TeacherResource',
     component: TeacherResource
+  },
+  {
+    path: '/sturesource',
+    name: 'StuResource',
+    component: StuResource
   }
 ];
 

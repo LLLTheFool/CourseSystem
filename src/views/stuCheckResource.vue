@@ -17,28 +17,25 @@
                 <el-button class="square" @click="GoToTeacherGroup">分组选择（学生端）</el-button>
             </div>
             <div class="right">
-                <label>主页</label>
                 <div class="main">
                     <div class="main-content">
-                        <div class="announcements">
-                            <h2 class="announcements-title">公告</h2>
-                            <div class="announcement-card">
-                                <div class="announcement-content">
-                                    <h3>组队通知</h3>
-                                    <p class="course">课程: 岗位实践</p>
-                                    <p>请大家及时组队完成实验，确保每个小组有至少三名成员。请在本周五之前完成组队，并在系统中提交组队信息。</p>
-                                    <span class="date">2024/12/7</span>
+                        <div class="resources">
+                            <h2 class="resources-title">课堂资源</h2>
+                            <div class="resource-card">
+                                <div class="resource-content">
+                                    <h3>课程大纲</h3>
+                                    <p class="description">请下载并查看课程大纲，了解课程结构和学习目标。</p>
+                                    <span class="file-type">文件类型: PDF</span>
                                 </div>
-                                <el-button @click="viewDetails('group-notice-1')" class="view-details-btn">查看详情</el-button>
+                                <el-button @click="downloadResource('course-outline')" class="view-details-btn">下载</el-button>
                             </div>
-                            <div class="announcement-card">
-                                <div class="announcement-content">
-                                    <h3>实验报告提交截止日期</h3>
-                                    <p class="course">课程: 岗位实践</p>
-                                    <p>请注意，所有实验报告的提交截止日期为2024年12月15日。请确保在此日期前提交报告，逾期提交将不予接受。</p>
-                                    <span class="date">2024/12/8</span>
+                            <div class="resource-card">
+                                <div class="resource-content">
+                                    <h3>实验指导</h3>
+                                    <p class="description">请下载实验指导文件，按照步骤完成实验。</p>
+                                    <span class="file-type">文件类型: Word</span>
                                 </div>
-                                <el-button @click="viewDetails('report-deadline-notice')" class="view-details-btn">查看详情</el-button>
+                                <el-button @click="downloadResource('experiment-guide')" class="view-details-btn">下载</el-button>
                             </div>
                         </div>
                     </div>
@@ -50,6 +47,10 @@
 </template>
 
 <script>
+
+import { useRouter } from 'vue-router';
+// 获取路由实例
+const router = useRouter();
 export default {
     data() {
         return {
@@ -84,9 +85,9 @@ export default {
         GoToTeacherGroup() {
             this.$router.push({ name: 'TeacherGroup' }); //
         },
-        viewDetails(noticeId) {
-            // 这里可以添加跳转到公告详情页的逻辑
-            console.log(`查看公告详情: ${noticeId}`);
+        downloadResource(resourceId) {
+            // 这里可以添加下载资源的逻辑
+            console.log(`下载资源: ${resourceId}`);
         }
     }
 }
@@ -168,20 +169,21 @@ export default {
     margin-top: 20px;
     flex: 1;
     height: 700px;
-}.announcements {
-     display: flex;
-     flex-direction: column;
-     gap: 20px;
-     padding: 20px;
- }
-.announcements-title {
+}
+.resources {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+.resources-title {
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 20px;
     border-bottom: 2px solid #ccc;
     padding-bottom: 10px;
 }
-.announcement-card {
+.resource-card {
     border: 1px solid #ccc;
     padding: 20px;
     border-radius: 8px;
@@ -191,23 +193,23 @@ export default {
     justify-content: space-between;
     align-items: center;
 }
-.announcement-content {
+.resource-content {
     flex: 1;
 }
-.announcement-card h3 {
+.resource-card h3 {
     margin: 0 0 10px;
     font-size: 24px;
 }
-.announcement-card p {
+.resource-card p {
     margin: 0 0 10px;
     font-size: 16px;
 }
-.announcement-card .course {
-    font-size: 14px;
-    color: #888;
+.resource-card .description {
+    font-size: 16px;
+    color: #555;
     margin-bottom: 10px;
 }
-.announcement-card .date {
+.resource-card .file-type {
     font-size: 14px;
     color: #888;
 }
