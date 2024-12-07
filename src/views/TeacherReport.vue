@@ -9,12 +9,10 @@
       <div class="box2">
         <div class="left">
           <el-button class="square" @click="GoHome">首页</el-button>
-          <el-button class="square" @click="GoToPublishResource">资源发布</el-button>
-          <el-button class="square" @click="GoToManageStudent">学生管理</el-button>
-          <el-button class="square" @click="GoToStudentGroup">学生分组情况</el-button>
-          <el-button class="square" @click="GoToStudentReport">学生汇报时间</el-button>
-          <el-button class="square" @click="GoToTeacherReport">汇报时间（学生端）</el-button>
-          <el-button class="square" @click="GoToTeacherGroup">分组选择（学生端）</el-button>
+          <el-button class="square" @click="GoToPublishResource">查看资源</el-button>
+          <el-button class="square" @click="GoToTeacherGroup">分组选择</el-button>
+          <el-button class="square" @click="GoToTeacherReport">汇报时间</el-button>
+          <el-button class="square" @click="GoToStudentGroup">项目管理系统</el-button>
         </div>
         <div class="right">
             <!-- 左侧按钮列 -->
@@ -172,7 +170,7 @@
         margin-right: 20px;
         width: 200px;
     }
-  
+
   /* 单个按钮方块样式 */
   .square {
     height: 45px;
@@ -186,7 +184,6 @@
     font-weight: bold;
     justify-content: center;
   }
-  
   .square label {
     padding: 10px;
   }

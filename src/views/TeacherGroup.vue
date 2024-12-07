@@ -14,12 +14,10 @@
         <!-- 左侧导航栏 -->
         <div class="left">
           <el-button class="square" @click="GoHome">首页</el-button>
-          <el-button class="square" @click="GoToPublishResource">资源发布</el-button>
-          <el-button class="square" @click="GoToManageStudent">学生管理</el-button>
-          <el-button class="square" @click="GoToStudentGroup">学生分组情况</el-button>
-          <el-button class="square" @click="GoToStudentReport">学生汇报时间</el-button>
-          <el-button class="square" @click="GoToTeacherReport">汇报时间（学生端）</el-button>
-          <el-button class="square" @click="GoToTeacherGroup">分组选择（学生端）</el-button>
+          <el-button class="square" @click="GoToPublishResource">查看资源</el-button>
+          <el-button class="square" @click="GoToTeacherGroup">分组选择</el-button>
+          <el-button class="square" @click="GoToTeacherReport">汇报时间</el-button>
+          <el-button class="square" @click="GoToStudentGroup">项目管理系统</el-button>
         </div>
   
         <!-- 右侧内容区域：组容器和加号按钮 -->
@@ -41,7 +39,7 @@
                 <input
                   type="text"
                   v-model="group.name"
-                  placeholder="请输入组名"
+                  placeholder=""
                   :disabled="group.isJoined"
                 />
               </div>
@@ -52,7 +50,7 @@
                 <input
                   type="text"
                   v-model="group.number"
-                  placeholder="请输入组号"
+                  placeholder=""
                   :disabled="group.isJoined"
                 />
               </div>
@@ -63,7 +61,7 @@
                 <input
                   type="number"
                   v-model="group.count"
-                  placeholder="请输入人数"
+                  placeholder=""
                   :disabled="group.isJoined"
                 />
               </div>
@@ -209,6 +207,10 @@
         font-weight: bold;
 
     }
+    .square:active {
+    background-color: blue; /* 将背景颜色设置为蓝色，你也可以替换为你想要的具体蓝色色值，比如 #008cba 等 */
+    color: white; /* 可以按需设置文字颜色，让文字显示更清晰，这里设置为白色 */
+}
     .square label{
         padding: 10px;
     }
@@ -252,28 +254,31 @@
     transition: transform 0.3s ease;
     position: absolute; /* 绝对定位，确保组容器可以自由定位 */
     top: 50px; /* 距离容器顶部50px */
-    right: 20px; /* 距离容器右边20px */
+    right: 40px; /* 距离容器右边20px */
   }
   
   .group-container.created {
-    transform: translateX(-670%);
+    transform: translateX(-650%);
   }
   
   .group-info {
+    margin-top: 10px;
     display: flex;
     flex-direction: column;
     gap: 15px;
+    height: 180px;
   }
   
   .row {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
   }
   
   input {
     max-width: 100px;
     width: 100%;
+    height: 25px;
   }
   
   /* 禁用输入框样式 */
@@ -284,19 +289,27 @@
   
   /* 按钮样式 */
   button {
-    padding: 10px;
+    padding: 5px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+
+    
   }
   
   .join-button {
     background-color: #008cba;
     color: white;
+    margin: 0 auto; /* 水平方向 margin 自动分配，实现水平居中 */
+    width:75px;
+    height: 35px;
   }
   
   .join-button:hover {
     background-color: #005f6b;
+    margin: 0 auto; /* 水平方向 margin 自动分配，实现水平居中 */
+    width:75px;
+
   }
   
   button:disabled {
