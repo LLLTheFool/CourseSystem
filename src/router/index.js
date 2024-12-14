@@ -9,6 +9,8 @@ import Test from '../views/Test.vue'
 import TeacherResource from '../views/teacher_resource.vue';
 import StuResource from '../views/stuCheckResource.vue';
 import wp from '../views/WorkPackge.vue'
+import ProjectManagement from "@/views/ProjectManagement.vue";
+
 const routes = [
   {
     path: '/',
@@ -55,11 +57,16 @@ const routes = [
     name: 'StuResource',
     component: StuResource
   },
-    {
-        path: '/workpackge', // 路由路径
-        name: 'WorkPackge',
-        component: wp // 组件对应路由
-     }
+   {
+     path: '/workpackge', // 路由路径
+     name: 'WorkPackge',
+      component: wp // 组件对应路由
+    },
+  {
+    path: '/project-management',
+    name: 'ProjectManagement',
+    component: ProjectManagement
+  }
 ];
 
 const router = createRouter({ 
