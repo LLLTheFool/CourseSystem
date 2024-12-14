@@ -111,7 +111,7 @@ export default{
         display: flex;
         align-items: center;
         height: 150px;
-        border: 2px,solid,rgba(0,0,0,.1);
+        border: 2px solid rgba(0,0,0,.1);
         background-color: white;
     }
     .box1 img{
@@ -144,7 +144,7 @@ export default{
     }
     .left{
         background-color: white;
-        border: 2px,solid,rgba(0,0,0,.1);
+        border: 2px solid rgba(0,0,0,.1);
         margin-right: 20px;
 
         width: 200px;
@@ -165,7 +165,7 @@ export default{
 
     }
     .right{
-        border: 2px,solid,rgba(0,0,0,.1);
+        border: 2px solid rgba(0,0,0,.1);
         background-color: white;
 
         flex: 1;
