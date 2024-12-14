@@ -11,56 +11,63 @@
 
     <!-- 主体内容区域 -->
     <div class="box2">
+      <!-- 新的顶部区域 -->
+      <div class="title2">
+  <!-- 选择框放在左侧 -->
+            <select v-model="form.project" id="project" required>
+              <option value="" disabled>请选择</option>
+              <option value="项目1">项目1</option>
+              <option value="项目2">项目2</option>
+              <option value="项目3">项目3</option>
+              <option value="项目4">项目4</option>
+            </select>
+
+            <!-- 中间的标题文本 -->
+            <div>项目管理系统</div>
+          </div>
+
+      <div class="box3">
+
       <!-- 左侧导航栏 -->
       <div class="left">
-        <el-button class="square" @click="GoHome">首页</el-button>
-        <el-button class="square" @click="GoToPublishResource">查看资源</el-button>
-        <el-button class="square" @click="GoToTeacherGroup">分组选择</el-button>
-        <el-button class="square" @click="GoToTeacherReport">汇报时间</el-button>
-        <el-button class="square" @click="GoToStudentGroup">项目管理系统</el-button>
+        <el-button class="square" @click="GoToPublishResource">概述</el-button>
         <el-button class="square" @click="GoToWorkPackge">工作包</el-button>
+        <el-button class="square" @click="GoToTeacherGroup">周报</el-button>
+        <el-button class="square" @click="GoToTeacherReport">成员</el-button>
+        <el-button class="square" @click="GoToStudentGroup">项目设置</el-button>
       </div>
 
       <!-- 右侧内容区域：表单 -->
       <div class="right">
         <div class="create">
-          <select id="create-select" v-model="value" @change="handleSelect">
-            <option value="" disabled selected>创建</option> 
-            <option v-for="item in options" :key="item.value" :value="item.value">
-              {{ item.label }}
-            </option>
-          </select>
+          <el-button type="primary" @click="handleSelect">创建任务</el-button>
         </div>
         <div class="packge">
-          <!-- 在这里插入表单 -->
           <table class="form-table">
-              <thead>
-                <tr>
-                  <th>序号</th>
-                  <th>主题</th>
-                  <th>类型</th>
-                  <th>状态</th>
-                  <th>受理人</th>
-                  <th>优先级</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- 用 v-for 来渲染每行数据 -->
-                <tr v-for="(item, index) in tableData" :key="index">
-                  <td>{{ index + 1 }}</td>
-                  <td>{{ item.subject }}</td>
-                  <td>{{ item.type }}</td>
-                  <td>{{ item.status }}</td>
-                  <td>{{ item.assignee }}</td>
-                  <td>{{ item.priority }}</td>
-                </tr>
-              </tbody>
-            </table>
-
+            <thead>
+              <tr>
+                <th>序号</th>
+                <th>主题</th>
+                <th>状态</th>
+                <th>受理人</th>
+                <th>优先级</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in tableData" :key="index">
+                <td>{{ index + 1 }}</td>
+                <td>{{ item.subject }}</td>
+                <td>{{ item.status }}</td>
+                <td>{{ item.assignee }}</td>
+                <td>{{ item.priority }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <!-- 只在选择下拉框后显示表单 -->
+
+        <!-- 表单 -->
         <div v-if="formVisible" class="form-container">
-          <h3>新增 {{ formTitle }}</h3>
+          <h3>新增任务 {{ formTitle }}</h3>
           <form @submit.prevent="submitForm">
             <div class="theme">
               <input v-model="form.subject" id="subject" type="text" placeholder="这里是主题（用户输入）" required />
@@ -70,71 +77,59 @@
             </div>
 
             <label for="gang">人员</label>
-            <!-- 受理人的标签和选择框 -->
             <div class="form-group">
               <label for="responsible-person">受理人</label>
               <select v-model="form.responsiblePerson" id="responsible-person" required>
                 <option value="" disabled>请选择</option>
-                <option value="team-member1">组员1</option>
-                <option value="team-member2">组员2</option>
-                <option value="team-member3">组员3</option>
-                <option value="team-member4">组员4</option>
+                <option value="组员1">组员1</option>
+                <option value="组员2">组员2</option>
+                <option value="组员3">组员3</option>
+                <option value="组员4">组员4</option>
               </select>
             </div>
 
-
-           <!-- 负责人的标签和选择框 -->
-           <div class="form-group">
+            <div class="form-group">
               <label for="leader">负责人</label>
               <select v-model="form.leader" id="leader" required>
                 <option value="" disabled>请选择</option>
-                <option value="team-member1">组员1</option>
-                <option value="team-member2">组员2</option>
-                <option value="team-member3">组员3</option>
-                <option value="team-member4">组员4</option>
+                <option value="组员1">组员1</option>
+                <option value="组员2">组员2</option>
+                <option value="组员3">组员3</option>
+                <option value="组员4">组员4</option>
               </select>
             </div>
 
-
             <label for="gang">详细信息</label>
-          <!-- 优先级 -->
-          <div class="form-group">
-  <label for="priority">优先级</label>
-  <select v-model="form.priority" id="priority" required>
-    <option value="" disabled>请选择优先级</option>
-    <option value="low">低</option>
-    <option value="middle">普通</option>
-    <option value="high">高</option>
-    <option value="immediate">立即</option>
-  </select>
-</div>
-
-<div class="date">
-  <label for="description">日期</label>
-  <textarea v-model="form.date" id="date" placeholder="用户输入" required></textarea>
-</div>
-
-
-            <label for="gang">附件</label>
             <div class="form-group">
-              <label for="file-upload" class="file-upload-label">+添加文件</label>
-              <input type="file" id="file-upload" ref="fileInput" style="display: none;" @change="handleFileChange" />
+              <label for="priority">优先级</label>
+              <select v-model="form.priority" id="priority" required>
+                <option value="" disabled>请选择优先级</option>
+                <option value="低">低</option>
+                <option value="普通">普通</option>
+                <option value="高">高</option>
+                <option value="立即">立即</option>
+              </select>
+            </div>
 
-          </div>
-                        <!-- 这部分已经在原来的代码中，只需要加一个容器来包裹按钮 -->
-              <div class="form-buttons">
-                <button type="submit">保存</button>
-                <button type="button" @click="resetForm">取消</button>
-              </div>
+            <div class="date">
+              <label for="description">日期</label>
+              <textarea v-model="form.date" id="date" placeholder="用户输入" required></textarea>
+            </div>
 
+            <div class="form-buttons">
+              <button type="submit">保存</button>
+              <button type="button" @click="resetForm">取消</button>
+            </div>
           </form>
         </div>
       </div>
+    </div>
     </div>
   </div>
 
   <router-view />
 </template>
+
 
 <script>
 import { ref } from 'vue';
@@ -144,11 +139,7 @@ export default {
   data() {
   return {
     value: '', // 用于绑定下拉框的值
-    options: [
-      { value: '选项1', label: '任务' },
-      { value: '选项2', label: '里程碑' },
-      { value: '选项3', label: '阶段' },
-    ],
+    options: [],
     tableData: [],  // 存储表格数据
     formVisible: false,  // 控制表单显示
     formTitle: '',       // 表单标题
@@ -165,6 +156,9 @@ export default {
 
 
   methods: {
+    handleSelect() {
+      this.formVisible = true; // 点击创建按钮时显示表单
+    },
   // 处理文件选择事件
   handleFileChange(event) {
     const file = event.target.files[0]; // 获取选择的文件
@@ -196,25 +190,12 @@ export default {
       this.router.push({ name: 'TeacherGroup' }); // 跳转到教师分组页面
     },
 
-    // 处理选择下拉框后的动作
-    handleSelect() {
-      this.formVisible = true; // 显示表单
-      if (this.value === '选项1') {
-        this.formTitle = '任务';
-      } else if (this.value === '选项2') {
-        this.formTitle = '里程碑';
-      } else if (this.value === '选项3') {
-        this.formTitle = '阶段';
-      }
-    },
-
     // 提交表单
     submitForm() {
   // 将表单数据添加到表格数据中
   this.tableData.push({
   subject: this.form.subject,
-  type: this.formTitle,   // 根据选择的类型填写
-  status: '待处理',       // 默认状态，可以根据需要修改
+  status: '新增',       // 默认状态，可以根据需要修改
   assignee: this.form.responsiblePerson,  // 受理人
   leader: this.form.leader,  // 负责人
   priority: this.form.priority, // 优先级
@@ -246,7 +227,6 @@ export default {
 </script>
 
 <style scoped>
-/* 样式：左侧表单和右侧按钮 */
 .container {
   height: 100vh;
   width: 100%;
@@ -260,7 +240,7 @@ export default {
   display: flex;
   align-items: center;
   height: 150px;
-  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background-color: white;
 }
 
@@ -288,12 +268,40 @@ export default {
 
 .box2 {
   flex: 1;
-  margin-top: 10px;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column; /* 修改为垂直方向排列 */
 }
 
+.title2 {
+  background-color: white;  /* 给 title2 添加背景色 */
+  padding: 5px;
+  display: flex;
+ 
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+  border: 1px solid black;
+}
+
+.title2 > div {
+  flex-grow: 1;  /* 使标题区域占据剩余空间 */
+  text-align: center;  /* 使标题文字居中 */
+}
+
+.title2 select {
+  margin-right: 20px;      /* 选择框和标题之间的间距 */
+  padding: 8px 16px;
+  font-size: 16px;
+  border-radius: 5px;
+  width: 200px;
+}
+
+.box3{
+  flex: 1;
+  display: flex;
+  flex-direction: row; /* 修改为垂直方向排列 */
+}
+/* 左侧导航栏 */
 .left {
   background-color: white;
   border: 2px solid rgba(0, 0, 0, 0.1);
@@ -302,18 +310,19 @@ export default {
 }
 
 .square {
-    height: 45px;
-    width: 100%;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    border: 0;
-    border-radius: 0;
-    font-size: 20px;
-    font-weight: bold;
-    justify-content: center;
-  }
+  height: 45px;
+  width: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  border: 0;
+  border-radius: 0;
+  font-size: 20px;
+  font-weight: bold;
+  justify-content: center;
+}
 
+/* 右侧内容区域 */
 .right {
   flex: 1;
   padding: 30px;
@@ -323,23 +332,29 @@ export default {
 
 .create {
   position: absolute;  /* 使用绝对定位 */
-  right: 30px;         /* 使组件距离右边缘 30px */
+  right: 30px;  
+      
 }
-
-.create select {
-  width: 150px;
-  padding: 10px;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 5px;
+.create  button{
+  position: absolute;  /* 使用绝对定位 */
+  right: 30px;  
+  width: 100px;
+  height: 40px;
 }
 
 .form-container {
-  border: 1px solid black; /* 添加 2px 宽，颜色为 #ccc 的边框 */
-  padding: 10px; /* 如果需要，可以添加内边距，使内容与边框之间有间距 */
-  border-radius: 8px; /* 可选，给边框添加圆角 */
-  width:300px;
+  position: absolute; /* 使用绝对定位 */
+  top: 36%;  /* 根据需要调整位置 */
+  left: 25%;
+  transform: translateX(-50%);  /* 使其居中 */
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 8px;
+  width: 300px;
+  background-color: white;  /* 设置明确的背景色 */
+  z-index: 10;  /* 确保在其他元素之上 */
 }
+
 
 form div {
   margin-bottom: 10px;
