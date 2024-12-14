@@ -8,7 +8,7 @@ import rs from '../views/TeacherReport.vue'
 import Test from '../views/Test.vue'
 import TeacherResource from '../views/teacher_resource.vue';
 import StuResource from '../views/stuCheckResource.vue';
-
+import wp from '../views/WorkPackge.vue'
 const routes = [
   {
     path: '/',
@@ -54,7 +54,12 @@ const routes = [
     path: '/sturesource',
     name: 'StuResource',
     component: StuResource
-  }
+  },
+    {
+        path: '/workpackge', // 路由路径
+        name: 'WorkPackge',
+        component: wp // 组件对应路由
+     }
 ];
 
 const router = createRouter({ 
