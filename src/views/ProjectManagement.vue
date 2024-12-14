@@ -39,12 +39,12 @@
                                 <el-input v-model="reportTitle" placeholder="请输入周报标题" class="report-title-input"></el-input>
                                 <el-input v-model="reportDescription" placeholder="请输入周报描述" class="report-description-input"></el-input>
                                 <el-upload
-                                        class="upload-demo"
-                                        action="https://jsonplaceholder.typicode.com/posts/"
-                                        :on-preview="handlePreview"
-                                        :on-remove="handleRemove"
-                                        :file-list="fileList"
-                                        list-type="text"
+                                    class="upload-demo"
+                                    action="https://jsonplaceholder.typicode.com/posts/"
+                                    :on-preview="handlePreview"
+                                    :on-remove="handleRemove"
+                                    :file-list="fileList"
+                                    list-type="text"
                                 >
                                     <el-button type="primary">上传文件</el-button>
                                 </el-upload>
@@ -63,42 +63,66 @@
                             </div>
                         </div>
                         <div v-else-if="activeTab === 'members'" class="tab-content">
-                            <h2>成员管理</h2>
-                            <!-- 添加成员按钮 -->
-                            <el-button type="primary" @click="dialogVisible = true">+ 成员</el-button>
-                            <!-- 添加成员弹窗 -->
-                            <el-dialog title="添加成员" :visible.sync="dialogVisible" width="50%" :append-to-body="false">
-                                <el-tabs v-model="activeMemberTab">
-                                    <el-tab-pane label="添加现有用户或组" name="existingUser">
-                                        <el-select v-model="selectedUser" placeholder="请选择用户或组">
-                                            <el-option label="用户1" value="user1"></el-option>
-                                            <el-option label="用户2" value="user2"></el-option>
-                                            <el-option label="组1" value="group1"></el-option>
-                                        </el-select>
-                                        <el-select v-model="selectedRole" placeholder="请选择角色">
-                                            <el-option label="管理员" value="admin"></el-option>
-                                            <el-option label="开发者" value="developer"></el-option>
-                                            <el-option label="观察者" value="observer"></el-option>
-                                        </el-select>
-                                        <el-button type="primary" @click="addMember">添加</el-button>
-                                    </el-tab-pane>
-                                    <el-tab-pane label="将角色分配给新成员" name="newUser">
-                                        <el-input v-model="newMemberName" placeholder="请输入新成员名称"></el-input>
-                                        <el-select v-model="selectedRole" placeholder="请选择角色">
-                                            <el-option label="管理员" value="admin"></el-option>
-                                            <el-option label="开发者" value="developer"></el-option>
-                                            <el-option label="观察者" value="observer"></el-option>
-                                        </el-select>
-                                        <el-button type="primary" @click="addMember">添加</el-button>
-                                    </el-tab-pane>
-                                </el-tabs>
-                                <el-table :data="members" style="width: 100%; margin-top: 20px;">
-                                    <el-table-column prop="name" label="名称" width="180"></el-table-column>
-                                    <el-table-column prop="role" label="角色" width="180"></el-table-column>
-                                    <el-table-column prop="group" label="组" width="180"></el-table-column>
-                                    <el-table-column prop="status" label="状态"></el-table-column>
-                                </el-table>
-                            </el-dialog>
+                            <div class="right">
+                                <!-- “+成员”按钮 -->
+                                <div class="create">
+                                    <el-button type="primary" @click="showAddMemberModal">+成员</el-button>
+                                </div>
+
+                                <!-- 添加的成员信息表格 -->
+                                <div class="member-table" v-if="addedMembers.length > 0">
+                                    <table class="form-table">
+                                        <thead>
+                                        <tr>
+                                            <th>名称</th>
+                                            <th>角色</th>
+                                            <th>组</th>
+                                            <th>状态</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr v-for="(member, index) in addedMembers" :key="index">
+                                            <td>{{ member.name }}</td>
+                                            <td>{{ member.role }}</td>
+                                            <td>{{ member.group }}</td>
+                                            <td>{{ member.status }}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- 添加成员弹窗 -->
+                                <div v-if="addMemberModalVisible" class="modal-container">
+                                    <div class="modal-content">
+                                        <h3>添加成员</h3>
+                                        <div class="form-group">
+                                            <label for="existing-user">添加现有用户或组</label>
+                                            <select v-model="form.existingUser" id="existing-user">
+                                                <option value="" disabled>请选择</option>
+                                                <option value="Chris">Chris</option>
+                                                <option value="Adam">Adam</option>
+                                                <option value="John">John</option>
+                                                <option value="课程组123">课程组123</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="new-role">将角色分配给新成员</label>
+                                            <select v-model="form.newRole" id="new-role">
+                                                <option value="" disabled>请选择</option>
+                                                <option value="成员">成员</option>
+                                                <option value="阅读者">阅读者</option>
+                                                <option value="项目管理员">项目管理员</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-buttons">
+                                            <button type="button" @click="addMember">添加</button>
+                                            <button type="button" @click="closeAddMemberModal">取消</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div v-else-if="activeTab === 'projectSettings'" class="tab-content">
                             <h2>项目设置</h2>
@@ -126,15 +150,13 @@ export default {
                 { id: 2, title: '第二周周报', description: '这是第二周的实验报告', fileType: 'PDF' },
                 { id: 3, title: '第三周周报', description: '这是第三周的实验报告', fileType: 'PPT' },
             ],
-            dialogVisible: false, // 控制弹窗显示
-            activeMemberTab: 'existingUser', // 默认选择“添加现有用户或组”
-            selectedUser: '', // 选中的用户或组
-            newMemberName: '', // 新成员名称
-            selectedRole: '', // 选中的角色
-            members: [
-                { name: '用户1', role: '管理员', group: '组1', status: '活跃' },
-                { name: '用户2', role: '开发者', group: '组2', status: '活跃' },
-            ],
+            form: {
+                project: '',
+                existingUser: '',
+                newRole: ''
+            },
+            addMemberModalVisible: false, // 控制弹窗显示
+            addedMembers: [], // 存储添加的成员信息
         }
     },
     methods: {
@@ -150,31 +172,56 @@ export default {
         viewReport(reportId) {
             console.log(`查看周报: ${reportId}`);
         },
+        // 显示添加成员弹窗
+        showAddMemberModal() {
+            this.addMemberModalVisible = true;
+        },
+
+        // 关闭添加成员弹窗
+        closeAddMemberModal() {
+            this.addMemberModalVisible = false;
+            this.resetForm();
+        },
+
         // 添加成员
         addMember() {
-            console.log('点击按钮');
-            this.dialogVisible = true;
-            console.log('dialogVisible:', this.dialogVisible); // 检查值是否为 true
-            this.dialogVisible = true; // 确保点击按钮时，dialogVisible 被设置为 true
-            if (this.activeMemberTab === 'existingUser') {
-                // 添加现有用户或组
-                this.members.push({
-                    name: this.selectedUser,
-                    role: this.selectedRole,
-                    group: '组1',
-                    status: '活跃',
+            if (this.form.existingUser || this.form.newRole) {
+                this.addedMembers.push({
+                    name: this.form.existingUser || '新成员',
+                    role: this.form.newRole || '未分配',
+                    group: this.form.existingUser.includes('课程组') ? this.form.existingUser : '未分配',
+                    status: '已添加'
                 });
-            } else if (this.activeMemberTab === 'newUser') {
-                // 添加新成员
-                this.members.push({
-                    name: this.newMemberName,
-                    role: this.selectedRole,
-                    group: '组1',
-                    status: '活跃',
-                });
+                this.closeAddMemberModal();
+            } else {
+                alert('请选择用户或角色');
             }
-            this.dialogVisible = false; // 关闭弹窗
         },
+        // 重置表单
+        resetForm() {
+            this.form.existingUser = '';
+            this.form.newRole = '';
+        },
+
+        // 路由跳转方法
+        GoToLogin() {
+            this.$router.push({ name: 'Login' });
+        },
+        GoToPublishResource() {
+            this.$router.push({ name: 'PublishResource' });
+        },
+        GoToWorkPackge() {
+            this.$router.push({ name: 'WorkPackge' });
+        },
+        GoToTeacherGroup() {
+            this.$router.push({ name: 'TeacherGroup' });
+        },
+        GoToTeacherReport() {
+            this.$router.push({ name: 'TeacherReport' });
+        },
+        GoToStudentGroup() {
+            this.$router.push({ name: 'StudentGroup' });
+        }
     }
 }
 </script>
@@ -191,11 +238,11 @@ export default {
 .box1 {
     display: flex;
     align-items: center;
-    height: 200px;
+    height: 150px;
     border: 2px solid rgba(0, 0, 0,.1);
     background-color: white;
     justify-content: space-between;
-    padding:   20px;
+    padding:  20px;
 }
 .project-select {
     width: 200px;
@@ -208,7 +255,7 @@ export default {
 }
 .box2 {
     flex: 1;
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -295,7 +342,108 @@ export default {
 .view-details-btn {
     margin-left: 20px;
 }
-.el-dialog {
-    z-index: 2000; /* 确保弹窗的 z-index 足够高 */
+
+/* 添加成员弹窗样式 */
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.form-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.form-buttons button:first-child {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.form-buttons button:last-child {
+    background-color: #f44336;
+    color: white;
+}
+/* 成员表格样式 */
+.member-table {
+    margin-top: 20px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.form-table th,
+.form-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.form-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.form-table tbody tr:hover {
+    background-color: #f0f0f0;
+    transition: background-color 0.3s ease;
 }
 </style>
