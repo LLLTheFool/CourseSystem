@@ -17,7 +17,7 @@
                 <el-button class="square" @click="activeTab = 'overview'">项目概述</el-button>
                 <el-button class="square" @click="activeTab = 'workPackages'">工作包</el-button>
                 <el-button class="square" @click="activeTab = 'weeklyReports'">周报</el-button>
-                <el-button class="square" @click="activeTab = 'members'">成员</el-button>
+                <el-button class="square" @click="activeTab = '成员管理'">成员</el-button>
                 <el-button class="square" @click="activeTab = 'projectSettings'">项目设置</el-button>
             </div>
             <div class="right">
@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-else-if="activeTab === 'members'" class="tab-content">
+                        <div v-else-if="activeTab === '成员管理'" class="tab-content">
                             <div class="right">
                                 <!-- “+成员”按钮 -->
                                 <div class="create">
