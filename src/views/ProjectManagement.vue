@@ -15,7 +15,7 @@
             <div class="left">
                 <!-- 侧边栏导航 -->
                 <el-button class="square" @click="activeTab = 'overview'">项目概述</el-button>
-                <el-button class="square" @click="activeTab = 'workPackages'">工作包</el-button>
+                <el-button class="square" @click="GoToWorkPackge">工作包</el-button>
                 <el-button class="square" @click="activeTab = 'weeklyReports'">周报</el-button>
                 <el-button class="square" @click="activeTab = '成员管理'">成员</el-button>
                 <el-button class="square" @click="activeTab = 'projectSettings'">项目设置</el-button>
@@ -64,7 +64,7 @@
                         </div>
                         <div v-else-if="activeTab === '成员管理'" class="tab-content">
                             <div class="right">
-                                <!-- “+成员”按钮 -->
+                                <!-- "+"成员"按钮 -->
                                 <div class="create">
                                     <el-button type="primary" @click="showAddMemberModal">+成员</el-button>
                                 </div>
@@ -157,6 +157,12 @@ export default {
             },
             addMemberModalVisible: false, // 控制弹窗显示
             addedMembers: [], // 存储添加的成员信息
+        }
+    },
+    created() {
+        // 从 query 参数中获取要激活的标签页
+        if (this.$route.query.tab) {
+            this.activeTab = this.$route.query.tab;
         }
     },
     methods: {

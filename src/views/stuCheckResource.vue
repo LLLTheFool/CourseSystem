@@ -9,12 +9,10 @@
         <div class="box2">
             <div class="left">
                 <el-button class="square" @click="GoHome">首页</el-button>
-                <el-button class="square" @click="GoToPublishResource">资源发布</el-button>
-                <el-button class="square" @click="GoToManageStudent">学生管理</el-button>
+                <el-button class="square" @click="GoToPublishResource">查看资源</el-button>
                 <el-button class="square" @click="GoToStudentGroup">学生分组情况</el-button>
                 <el-button class="square" @click="GoToStudentReport">学生汇报时间</el-button>
-                <el-button class="square" @click="GoToTeacherReport">汇报时间（学生端）</el-button>
-                <el-button class="square" @click="GoToTeacherGroup">分组选择（学生端）</el-button>
+                <el-button class="square" @click="GoToProjectManagement">项目管理系统</el-button>
             </div>
             <div class="right">
                 <div class="main">
@@ -84,6 +82,9 @@ export default {
         },
         GoToTeacherGroup() {
             this.$router.push({ name: 'TeacherGroup' }); //
+        },
+        GoToProjectManagement() {
+            this.$router.push({ name: 'ProjectManagement' }); // 跳转到项目管理系统页面
         },
         downloadResource(resourceId) {
             // 这里可以添加下载资源的逻辑

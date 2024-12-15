@@ -1,15 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue'
 import LoginPage from '../views/LoginPage.vue';
-import StudentGroup from '../views/StudentGroup.vue';
-import StudentReport from '../views/StudentReport.vue';
-import gc from '../views/TeacherGroup.vue'
-import rs from '../views/TeacherReport.vue' 
+import StudentGroup from '../views/studentGroup.vue';
+import StudentReport from '../views/studentReport.vue';
+import TeacherGroup from '../views/teacherGroup.vue'
+import TeacherReport from '../views/teacherReport.vue' 
 import Test from '../views/Test.vue'
 import TeacherResource from '../views/teacher_resource.vue';
 import StuResource from '../views/stuCheckResource.vue';
-import wp from '../views/WorkPackge.vue'
 import ProjectManagement from "@/views/ProjectManagement.vue";
+import WorkPackge from '../views/WorkPackge.vue'
 
 const routes = [
   {
@@ -38,14 +38,14 @@ const routes = [
     component: Test
   },
   {
-    path: '/teachergroup', // 路由路径
+    path: '/teachergroup', 
     name: 'TeacherGroup',
-    component: gc // 组件对应路由
+    component: TeacherGroup 
   },
   {
-    path: '/teacherreport', // 路由路径
+    path: '/teacherreport',
     name: 'TeacherReport',
-    component: rs // 组件对应路由
+    component: TeacherReport
   },
   {
     path: '/teacherresource',
@@ -57,15 +57,16 @@ const routes = [
     name: 'StuResource',
     component: StuResource
   },
-   {
-     path: '/workpackge', // 路由路径
-     name: 'WorkPackge',
-      component: wp // 组件对应路由
-    },
   {
-    path: '/project-management',
+    path: '/project-management/:tab?',
     name: 'ProjectManagement',
-    component: ProjectManagement
+    component: ProjectManagement,
+    props: true
+  },
+  {
+    path: '/workpackge',
+    name: 'WorkPackge',
+    component: WorkPackge
   }
 ];
 
