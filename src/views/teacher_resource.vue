@@ -11,12 +11,10 @@
             <div class="left">
                 <!-- 侧边栏导航按钮 -->
                 <el-button class="square" @click="GoHome">首页</el-button>
-                <el-button class="square" @click="GoToPublishResource">资源发布</el-button>
+                <el-button class="square" @click="GoToTeacherResource">资源发布</el-button>
                 <el-button class="square" @click="GoToManageStudent">学生管理</el-button>
-                <el-button class="square" @click="GoToStudentGroup">学生分组情况</el-button>
-                <el-button class="square" @click="GoToStudentReport">学生汇报时间</el-button>
-                <el-button class="square" @click="GoToTeacherReport">汇报时间（学生端）</el-button>
-                <el-button class="square" @click="GoToTeacherGroup">分组选择（学生端）</el-button>
+                <el-button class="square" @click="GoToTeacherGroup">学生分组选择</el-button>
+                <el-button class="square" @click="GoToTeacherReport">学生汇报时间</el-button>
             </div>
             <div class="right">
                 <div class="class-selection">
@@ -230,21 +228,14 @@ const GoHome = () => {
 const GoToLogin = () => {
     router.push({ name: 'Login' });
 };
-const GoToStudentGroup = () => {
-    router.push({ name: 'StudentGroup' });
-};
-const GoToStudentReport = () => {
-    router.push({ name: 'StudentReport' });
-};
 const GoToTeacherReport = () => {
     router.push({ name: 'TeacherReport' });
 };
 const GoToTeacherGroup = () => {
     router.push({ name: 'TeacherGroup' });
 };
-const GoToPublishResource = () => {
+const GoToTeacherResource = () => {
     router.push({ name: 'TeacherResource' });
-
 };
 
 </script>

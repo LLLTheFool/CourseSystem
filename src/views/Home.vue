@@ -9,10 +9,10 @@
         <div class="box2">
             <div class="left">
                 <el-button class="square" @click="GoHome">首页</el-button>
-                <el-button class="square" @click="GoToPublishResource">资源发布</el-button>
+                <el-button class="square" @click="GoToTeacherResource">资源发布</el-button>
                 <el-button class="square" @click="GoToManageStudent">学生管理</el-button>
-                <el-button class="square" @click="GoToTeacherReport">学生汇报时间</el-button>
                 <el-button class="square" @click="GoToTeacherGroup">学生分组选择</el-button>
+                <el-button class="square" @click="GoToTeacherReport">学生汇报时间</el-button>
             </div>
             <div class="right">
                 <label>主页</label>
@@ -75,6 +75,9 @@ export default {
         },
         GoToTeacherGroup() {
             this.$router.push({ name: 'TeacherGroup' }); //
+        },
+        GoToTeacherResource() {
+            this.$router.push({ name: 'TeacherResource' }); //
         },
         viewDetails(noticeId) {
             // 这里可以添加跳转到公告详情页的逻辑
