@@ -1,6 +1,6 @@
 <script>
-import top from './components/top.vue'
-import Sidebar from './components/Sidebar.vue';
+import top from './components/topofstudent.vue'
+import Sidebar from './components/SidebarForTeacher.vue';
 import { RouterView } from 'vue-router';
 
 
@@ -18,33 +18,16 @@ export default {
 </script>
 
 <template>
-    <div class="container" v-if="isShow">
-        <top @change-show="isShow = !isShow" />
-        <div class="container1">
-            <Sidebar />
-            <RouterView />
-        </div>
+    <div class="container">
+        <RouterView/>
     </div>
-
-    <div class="container" v-if="!isShow">
-            <RouterView />
-    </div>
-
-
-
 </template>
 
 
 <style>
-.container1 {
-    display: flex;
-}
 
-.container {
-    height: 100vh;
+.container{
     width: 100%;
-    padding: 0;
-    flex-direction: column;
-    background-color: rgba(0, 0, 0, .05);
+    height: 100vh;
 }
 </style>

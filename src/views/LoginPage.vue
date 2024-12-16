@@ -1,41 +1,41 @@
 <script>
 import axios from 'axios';
 
-export default{
-    data(){
-        return{
-            name:"",
-            password:"",
-            isShow:false,
-            tips:"",
+export default {
+    data() {
+        return {
+            name: "",
+            password: "",
+            isShow: false,
+            tips: "",
         }
     },
-    methods:{
-        async Login(){
-            if(this.name === "" || this.password === ""){
-                this.tips="账号或密码为空！";
-                this.isShow=true;
+    methods: {
+        async Login() {
+            if (this.name === "" || this.password === "") {
+                this.tips = "账号或密码为空！";
+                this.isShow = true;
                 return;
             }
             // 这里填写将账号密码传入后端并接收返回值的情况
-            try{
-                const response = await axios.post('http://127.0.0.1:4523/m1/5394050-5067403-default/login',{
-                    user_id:this.name,
+            try {
+                const response = await axios.post('http://127.0.0.1:4523/m1/5394050-5067403-default/login', {
+                    user_id: this.name,
                     password: this.password,
                 },
-                {
-                    headers: {
-                    'Content-Type': 'application/json',
-                    },
-                });
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
                 const a = response.data;
-                if(a){
+                if (a) {
                     alert("登录成功！");
                 }
-                else{
+                else {
                     alert("登录失败！");
                 }
-            }catch(error){
+            } catch (error) {
                 console.error('登录请求失败：', error);
             }
         }
@@ -47,6 +47,8 @@ export default{
 <template>
     <router-view></router-view>
     <div class="container">
+        <RouterLink to="/HomeForTeacher" class="teacher-link-button">教师端</RouterLink>
+        <RouterLink to="/HomeForStu" class="student-link-button">学生端</RouterLink>
         <div class="Box">
             <h1>登录</h1>
             <div class="InputBox">
@@ -63,7 +65,7 @@ export default{
                 <el-button class="loginBtn" @click="Login">登录</el-button>
             </div>
 
-            <div :class="{tip: isShow}">
+            <div :class="{ tip: isShow }">
                 {{ tips }}
             </div>
         </div>
@@ -82,7 +84,8 @@ export default{
     height: 370px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 15px;
-    padding: 20px; /* 添加适当的内边距 */
+    padding: 20px;
+    /* 添加适当的内边距 */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -97,8 +100,10 @@ export default{
 }
 
 .InputBox {
-    width: 100%;  /* 使容器宽度充满 */
-    height: 50px; /* 设置合适的高度 */
+    width: 100%;
+    /* 使容器宽度充满 */
+    height: 50px;
+    /* 设置合适的高度 */
     padding: 0;
     margin-bottom: 8px;
     margin-left: auto;
@@ -109,14 +114,17 @@ export default{
 }
 
 .Box input {
-    width: 100%;  /* 让输入框填满父容器 */
+    width: 100%;
+    /* 让输入框填满父容器 */
     height: 30px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     outline: none;
     font-size: 14px;
     border-radius: 15px;
-    padding-left: 10px; /* 给输入框添加内边距 */
-    background-color: white; /* 设置背景色为白色 */
+    padding-left: 10px;
+    /* 给输入框添加内边距 */
+    background-color: white;
+    /* 设置背景色为白色 */
 }
 
 .logo {
@@ -127,9 +135,12 @@ export default{
 
 .btnBox {
     margin-top: 30px;
-    display: flex;  /* 设置为 Flex 容器 */
-    justify-content: center;  /* 水平居中 */
-    align-items: center;  /* 垂直居中 */
+    display: flex;
+    /* 设置为 Flex 容器 */
+    justify-content: center;
+    /* 水平居中 */
+    align-items: center;
+    /* 垂直居中 */
 }
 
 .loginBtn {
@@ -151,16 +162,55 @@ export default{
 }
 
 .line1 {
-    width: 100%; /* 让线条宽度自适应 */
+    width: 100%;
+    /* 让线条宽度自适应 */
     margin-left: 40px;
     margin-bottom: 30px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .line2 {
-    width: 100%; /* 让线条宽度自适应 */
+    width: 100%;
+    /* 让线条宽度自适应 */
     margin-left: 40px;
     margin-bottom: 10px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.teacher-link-button {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    text-decoration: none;
+    color: white;
+    background-color: #409eff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+    /* 添加过渡效果，鼠标悬停时背景色变化更平滑 */
+}
+
+.teacher-link-button:hover {
+    background-color: #66b1ff;
+    /* 鼠标悬停时的背景色 */
+}
+
+.student-link-button{
+    position: absolute;
+    bottom: 100px;
+    right: 50px;
+    text-decoration: none;
+    color: white;
+    background-color: #409eff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    transition: background-color 0.3s ease;
+  
+}
+.student-link-button:hover {
+    background-color: #66b1ff;
+    /* 鼠标悬停时的背景色 */
 }
 </style>

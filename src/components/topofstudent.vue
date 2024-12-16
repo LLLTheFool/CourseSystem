@@ -1,12 +1,13 @@
 <template>
-  <div class="container" >
+ 
         <div class="box1">
             <img src="../components/icon/Logo.jpg">
-            <div class="title">课程管理系统</div>
-            <RouterLink to="/login" @click="toggleShow">登录</RouterLink>
+            <div class="title">课程管理系统(学生端)</div>
+            <RouterLink to="/" @click="toggleShow">登录</RouterLink>
+            <hr>
+            <RouterLink to="/HomeForTeacher">前往教师端</RouterLink>
         </div>
-        <div class="line"></div>
-  </div>
+
 </template>
 
 <script>
@@ -21,7 +22,7 @@
 
 <style scoped>
     .container{
-        height: 17vh;
+        height: auto;
         width: 100%;
         padding: 0;
         display: flex;

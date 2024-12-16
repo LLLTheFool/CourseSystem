@@ -5,43 +5,94 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: ()=> import('../views/Home.vue'),
+      path: '/HomeForTeacher',
+      name: 'HomeForStuTeacher',
+      component: () => import('../views/Teacher/Home.vue'),
     },
-   
-   
+
+
     {
       path: '/stumanagement',
       name: 'stumanagement',
-      component: () => import('../views/stumanagement.vue'),
+      component: () => import('../views/Teacher/stumanagement.vue'),
     },
     {
       path: '/groupInfo',
       name: 'groupInfo',
-      component: () => import('../views/groupInfo.vue'),
+      component: () => import('../views/Teacher/groupInfo.vue'),
     },
-    {
-      path: '/publishResources',
-      name: 'publishResources',
-      component: () => import('../views/publishResources.vue'),
-    },
+   
     {
       path: '/Infoimport',
       name: 'Infoimport',
-      component: () => import('../views/InfoImport.vue')
+      component: () => import('../views/Teacher/InfoImport.vue')
     },
     {
       path: '/studentReport',
       name: 'studentReport',
-      component: () => import('../views/studentReport.vue')
+      component: () => import('../views/Teacher/studentReport.vue')
     },
     {
-      path: '/login',
+      path: '/',
       name: 'Login',
       component: () => import('../views/LoginPage.vue')
     },
-  ],
+    {
+      path: '/HomeForStu',
+      name: 'HomeForStu',
+      component: () => import('../views/Student/Home.vue')
+    },
+
+    {
+      path: '/ResourceList',
+      name: 'ResourceList',
+      component: () => import('../views/Student/ResourceList.vue')
+    },
+    {
+      path: '/GroupChoose',
+      name: 'GroupChoose',
+      component: () => import('../views/Student/GroupChoose.vue')
+    },
+    {
+      path: '/ReportTime',
+      name: 'ReportTime',
+      component: () => import('../views/Student/ReportTime.vue')
+    },
+   
+   
+   
+    {
+      path: '/Introduce',
+      name: 'Introduce',
+      component: () => import('../views/ProjectManagementSystem/Introduce.vue')
+    },
+    {
+      path: '/WorkPackage',
+      name: 'WorkPackage',
+      component: () => import('../views/ProjectManagementSystem/WorkPackage.vue')
+    },
+    {
+      path: '/WeekReport',
+      name: 'WeekReport',
+      component: () => import('../views/ProjectManagementSystem/WeekReport.vue')
+    },
+    {
+      path: '/Member',
+      name: 'Member',
+      component: () => import('../views/ProjectManagementSystem/Member.vue')
+    },
+    {
+      path: '/ProjectSetting',
+      name: 'ProjectSetting',
+      component: () => import('../views/ProjectManagementSystem/ProjectSetting.vue')
+    },
+    {
+      path: '/Test',
+      name: 'Test',
+      component: () => import('../views/ProjectManagementSystem/Test.vue')
+    },
+  ]
 })
+
 
 export default router

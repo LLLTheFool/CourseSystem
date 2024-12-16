@@ -1,70 +1,78 @@
 <template>
-    <div class="container">
-        <div class="title1">
-            <h3>已经发布的公告</h3>
-        </div>
-        <div class="announceInfo">
-            <el-scrollbar height="400px">
-                <!-- 循环显示公告 -->
-                <div v-for="item in announcements" :key="item.id" class="announcement-item">
-                    <!-- 公告标题 -->
-                    <p @click="toggleDetails(item.id)" class="announcement-title" style="cursor: pointer;">
-                        {{ item.title }}
-                    </p>
+        <topteacher />
+        <div class="container1">
+            <Sidebar></Sidebar>
+            <div class="container">
+                <div class="title1">
+                    <h3>已经发布的公告</h3>
+                </div>
+                <div class="announceInfo">
+                    <el-scrollbar height="400px">
+                        <!-- 循环显示公告 -->
+                        <div v-for="item in announcements" :key="item.id" class="announcement-item">
+                            <!-- 公告标题 -->
+                            <p @click="toggleDetails(item.id)" class="announcement-title" style="cursor: pointer;">
+                                {{ item.title }}
+                            </p>
 
-                    <!-- 展开框 -->
-                    <transition name="slide">
-                        <div v-if="expandedItem === item.id" class="announcement-details">
-                            <p><strong>内容：</strong>{{ item.content }}</p>
-                            <p><strong>日期：</strong>{{ item.date }}</p>
+                            <!-- 展开框 -->
+                            <transition name="slide">
+                                <div v-if="expandedItem === item.id" class="announcement-details">
+                                    <p><strong>内容：</strong>{{ item.content }}</p>
+                                    <p><strong>日期：</strong>{{ item.date }}</p>
+                                </div>
+                            </transition>
                         </div>
-                    </transition>   
+
+                    </el-scrollbar>
+                </div>
+                <div class="addIcon">
+                    <el-icon @click="openAddWindow" size="50px">
+                        <CirclePlus />
+                    </el-icon>
                 </div>
 
-            </el-scrollbar>
-        </div>
-        <div class="addIcon">
-            <el-icon @click="openAddWindow" size="50px">
-                <CirclePlus />
-            </el-icon>
-        </div>
+                <!-- 添加公告窗口 -->
+                <div v-if="addWindowVisible" class="add-announcement-window">
+                    <div class="window-header">
+                        <h4>添加新公告</h4>
+                        <span @click="closeAddWindow" class="close-icon">&times;</span>
+                    </div>
+                    <div class="window-body">
+                        <label for="new-title">标题：</label>
+                        <input id="new-title" v-model="newTitle" type="text" style="width: 300px;">
 
-        <!-- 添加公告窗口 -->
-        <div v-if="addWindowVisible" class="add-announcement-window">
-            <div class="window-header">
-                <h4>添加新公告</h4>
-                <span @click="closeAddWindow" class="close-icon">&times;</span>
-            </div>
-            <div class="window-body">
-                <label for="new-title">标题：</label>
-                <input id="new-title" v-model="newTitle" type="text" style="width: 300px;">
+                        <label for="new-content">内容：</label>
+                        <textarea id="new-content" v-model="newContent" style="width: 350px;"></textarea>
 
-                <label for="new-content">内容：</label>
-                <textarea id="new-content" v-model="newContent" style="width: 350px;"></textarea>
+                        <label for="new-date">日期：</label>
+                        <input id="new-date" v-model="newDate" type="date" style="width: 300px;">
 
-                <label for="new-date">日期：</label>
-                <input id="new-date" v-model="newDate" type="date" style="width: 300px;">
+                        <label for="new-image">文件：</label>
+                        <input id="new-image" type="file" @change="handleImageUpload" accept="image/*"
+                            style="width: 300px;">
 
-                <label for="new-image">图片：</label>
-                <input id="new-image" type="file" @change="handleImageUpload" accept="image/*" style="width: 300px;">
-
-                <div v-if="imagePreview" class="image-preview">
-                    <p>图片预览：</p>
-                    <img :src="imagePreview" alt="图片预览" style="max-width: 100%; max-height: 200px;">
+                        <div v-if="imagePreview" class="image-preview">
+                            <p>图片预览：</p>
+                            <img :src="imagePreview" alt="图片预览" style="max-width: 100%; max-height: 200px;">
+                        </div>
+                    </div>
+                    <div class="window-footer">
+                        <button @click="closeAddWindow">取消</button>
+                        <button @click="submitNewAnnouncement">提交</button>
+                    </div>
                 </div>
             </div>
-            <div class="window-footer">
-                <button @click="closeAddWindow">取消</button>
-                <button @click="submitNewAnnouncement">提交</button>
-            </div>
         </div>
-    </div>
+
 </template>
 
 
 <script>
 import { ElScrollbar, ElIcon } from 'element-plus';
 import { CirclePlus } from '@element-plus/icons-vue';
+import topteacher from '../../components/topofteacher.vue';
+import Sidebar from '../../components/SidebarForTeacher.vue';
 import axios from 'axios';
 
 export default {
@@ -72,11 +80,13 @@ export default {
         ElScrollbar,
         ElIcon,
         CirclePlus,
+        topteacher,
+        Sidebar,
     },
     data() {
         return {
             announcements: [
-               
+
             ], // 公告列表
             newTitle: '',
             newContent: '',
@@ -88,11 +98,11 @@ export default {
         };
     },
     methods: {
-        async fetchAnnouncementList(){
-            try{
-                const response=await axios.get("http://127.0.0.1:4523/m1/5394050-5067403-default/announcement/get");
-                if(response.status===200){
-                    this.announcements=response.data.data;
+        async fetchAnnouncementList() {
+            try {
+                const response = await axios.get("http://127.0.0.1:4523/m1/5394050-5067403-default/announcement/get");
+                if (response.status === 200) {
+                    this.announcements = response.data.data;
                     console.log(response.data.message)
                 }
             }
@@ -116,38 +126,38 @@ export default {
             }
         },
         async submitNewAnnouncement() {
-    const formData = new FormData();
-    formData.append('title', this.newTitle);
-    formData.append('content', this.newContent);
-    formData.append('date', this.newDate);
-    if (this.newImage) {
-        formData.append('image', this.newImage); // 将文件对象添加到 FormData
-    }
-
-    try {
-        const response = await axios.post(
-            "http://127.0.0.1:4523/m1/5394050-5067403-default/announcement/post",
-            formData,
-            {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+            const formData = new FormData();
+            formData.append('title', this.newTitle);
+            formData.append('content', this.newContent);
+            formData.append('date', this.newDate);
+            if (this.newImage) {
+                formData.append('image', this.newImage); // 将文件对象添加到 FormData
             }
-        );
 
-        if (response.status === 200) {
-            this.$message.success("公告添加成功！");
-            console.log(response.data.message)
-            this.fetchAnnouncementList(); // 刷新公告列表
-        }
-    } catch (error) {
-        console.error("提交失败:", error);
-        this.$message.error("提交失败，请稍后重试！");
-    }
+            try {
+                const response = await axios.post(
+                    "http://127.0.0.1:4523/m1/5394050-5067403-default/announcement/post",
+                    formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        },
+                    }
+                );
 
-    this.resetForm();
-    this.addWindowVisible = false;
-},
+                if (response.status === 200) {
+                    this.$message.success("公告添加成功！");
+                    console.log(response.data.message)
+                    this.fetchAnnouncementList(); // 刷新公告列表
+                }
+            } catch (error) {
+                console.error("提交失败:", error);
+                this.$message.error("提交失败，请稍后重试！");
+            }
+
+            this.resetForm();
+            this.addWindowVisible = false;
+        },
 
         resetForm() {
             this.newTitle = '';
@@ -164,7 +174,7 @@ export default {
                 this.expandedItem = this.expandedItem === itemId ? null : itemId; // 切换展开项
             },
         },
-        
+
 
     },
     mounted() {
@@ -175,7 +185,13 @@ export default {
 
 
 <style scoped>
-/* 页面布局和样式 */
+
+.container1 {
+    width: 100%;
+    display: flex;
+}
+
+
 .container {
     width: 89%;
     height: 76vh;

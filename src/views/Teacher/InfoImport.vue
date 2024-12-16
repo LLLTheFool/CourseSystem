@@ -1,4 +1,5 @@
 <template>
+  <RouterLink to="/stumanagement"><button class="backButton">返回</button></RouterLink>
   <div class="container">
     <h3>学生信息批量导入界面</h3>
     <div class="uploadfile">
@@ -26,8 +27,16 @@
 <script>
 import { Upload } from "@element-plus/icons-vue";
 import { handleError } from "vue";
+import topteacher from '../../components/topofteacher.vue';
+import Sidebar from '../../components/SidebarForTeacher.vue';
+
 
 export default {
+  components: {
+    topteacher,
+    Sidebar
+  },
+
   name: "BatchImport",
   components: {
     Upload,
@@ -72,6 +81,12 @@ export default {
 </script>
 
 <style scoped>
+.backButton{
+  position: absolute;
+  top:20px;
+  right:20px
+}
+
 .container {
   padding: 20px;
   background-color: #f9f9f9;
