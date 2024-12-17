@@ -92,7 +92,7 @@ const groups = ref([]);
   // 创建组
   const createGroup = async (group) => {
     try {
-      const response = await axios.post('/gruopInfo', {
+      const response = await axios.post('http://127.0.0.1:4523/m1/5394050-5067403-default/gruopInfo', {
         groupName: group.name,
         groupNumber: group.number
       });
@@ -101,10 +101,10 @@ const groups = ref([]);
         group.isCreated = true;
         console.log("创建组成功:", response.data);
       } else {
-        console.error("创建组失败:", response.data.message);
+        console.error("创建组失败:", response.data.message || '未知错误');
       }
     } catch (error) {
-      console.error("创建组请求失败:", error);
+      console.error("创建组请求失败:", error.response?.data?.message || error.message);
     }
   };
   
