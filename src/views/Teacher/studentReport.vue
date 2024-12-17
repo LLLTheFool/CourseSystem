@@ -7,22 +7,17 @@
             <div class="line"></div>
             <div class="box2">
 
-
                 <div class="right">
                     <el-scrollbar height="700px">
-                        <el-button v-for="item in 20" :key="item" @click="Week(item)" class="scrollbar-demo-item">第{{
-                            item }}周</el-button>
+                        <el-button v-for="item in 20" :key="item" @click="getStu(item)" class="scrollbar-demo-item">第{{item }}周</el-button>
                     </el-scrollbar>
                     <div class="main">
-                        <div class="student" key="name">{{ name }}</div>
-                        <div class="student" key="name">{{ name }}</div>
-                        <div class="student" key="name">{{ name }}</div>
-                        <div class="student" key="name">{{ name }}</div>
-                        <div class="student" key="name">{{ name }}</div>
+                        <div class="student" v-for="student in Stu" :key="student.ID">{{ student.Name }}</div>
                     </div>
                 </div>
             </div>
         </div>
+        
         <router-view />
     </div>
 </template>
@@ -30,6 +25,7 @@
 <script>
 import top from '../../components/topofteacher.vue';
 import Sidebar from '../../components/SidebarForTeacher.vue';
+import axios from 'axios'
 
 export default {
     components: {
@@ -40,6 +36,20 @@ export default {
         return {
             path: '',
             name: '张三',
+            Stu:[
+                {
+                    ID: '',
+                    Week: '',
+                    Order: '',
+                    Name: '张三',
+                },
+                {
+                    ID: '',
+                    Week: '',
+                    Order: '',
+                    Name: '李四',
+                }
+            ],
         }
     },
     mounted() {
@@ -64,13 +74,22 @@ export default {
         GoToStudentReport() {
             this.$router.push({ name: 'StudentReport' }); // 跳转到学生汇报时间页面
         },
-        Week(num) {
+        async getStu(num) {
             // 从后端获取对应周数的学生信息
-            if (num == 1) {
-                this.name = "李四";
+            try{
+                const response = await axios.get('http://127.0.0.1:4523/m1/5394050-5067403-default/report/weekly',
+                {
+                    week: num
+                },
+                {
+                    headers: {'Content-Type': 'application/json'},
+                })
+                this.Stu = response.data
+                console.log(this.Stu)
             }
-            else {
-                this.name = "张三";
+            catch(error)
+            {
+                console.error(error);
             }
         }
     }
@@ -125,7 +144,7 @@ export default {
 
 .box2 {
     flex: 1;
-    margin-top: 10px;
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
