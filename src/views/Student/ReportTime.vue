@@ -39,7 +39,8 @@
 <script setup>
 import top from "../../components/topofstudent.vue"
 import SidebarForStu from "../../components/SidebarForStu.vue";
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import axios from 'axios';
 
 // 移除 export default，改用 setup 语法
 const components = {
@@ -74,21 +75,55 @@ function changeGroup(number) {
 }
 
 // 切换按钮选择状态的函数
-function toggleButtonSelection(index) {
-  const button = currentGroupButtons.value[index]; // 获取当前按钮
+async function toggleButtonSelection(index) {
+  const button = currentGroupButtons.value[index];
+  
   if (button.selected) {
-    // 如果按钮已被选择，取消选择
+    // 取消选择
     button.selected = false;
-    button.username = ''; // 清空用户名
+    button.username = '';
   } else {
-    // 如果按钮未被选择，检查是否已有选择
+    // 选择时间段
     if (!isAnyButtonSelected.value) {
-      // 选择当前按钮
-      button.selected = true;
-      button.username = username.value; // 使用传入的用户名
+      try {
+        const response = await axios.post('/report/choose', {
+          studentId: stuid.value,
+          week: groupNumber.value,
+          order: index + 1
+        });
+
+        if (response.data.success) {
+          button.selected = true;
+          button.username = username.value;
+          console.log("选择成功:", response.data);
+        } else {
+          console.error("选择失败:", response.data.message);
+        }
+      } catch (error) {
+        console.error("请求失败:", error);
+      }
     }
   }
 }
+
+//获取初始数据的方法
+async function fetchInitialData() {
+  try {
+    const response = await axios.get('/report/choose');
+    // 处理获取到的数据
+    if (response.data.success) {
+      // 更新按钮状态
+      // ... 根据后端返回的数据更新 buttons
+    }
+  } catch (error) {
+    console.error("获取数据失败:", error);
+  }
+}
+
+// 在组件挂载时获取数据
+onMounted(() => {
+  fetchInitialData();
+});
 </script>
 
 <style scoped>
