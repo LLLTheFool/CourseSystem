@@ -23,18 +23,13 @@ export default {
                     user_id: this.name,
                     password: this.password,
                 },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                    });
-                const a = response.data;
-                if (a) {
-                    alert("登录成功！");
-                }
-                else {
-                    alert("登录失败！");
-                }
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                console.log('登陆成功');
+                this.$router.push({name: 'HomeForStuTeacher'})
             } catch (error) {
                 console.error('登录请求失败：', error);
             }
@@ -73,7 +68,7 @@ export default {
 </template>
 <style scoped>
 .container {
-    height: 100vh;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -81,7 +76,7 @@ export default {
 
 .Box {
     width: 480px;
-    height: 370px;
+    height: 350px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 15px;
     padding: 20px;
@@ -100,9 +95,9 @@ export default {
 }
 
 .InputBox {
-    width: 100%;
+    width: 450px;
     /* 使容器宽度充满 */
-    height: 50px;
+    height: 100px;
     /* 设置合适的高度 */
     padding: 0;
     margin-bottom: 8px;
@@ -116,10 +111,10 @@ export default {
 .Box input {
     width: 100%;
     /* 让输入框填满父容器 */
-    height: 30px;
+    height: 40px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     outline: none;
-    font-size: 14px;
+    font-size: 16px;
     border-radius: 15px;
     padding-left: 10px;
     /* 给输入框添加内边距 */
@@ -163,16 +158,14 @@ export default {
 
 .line1 {
     width: 100%;
-    /* 让线条宽度自适应 */
-    margin-left: 40px;
+
     margin-bottom: 30px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .line2 {
     width: 100%;
-    /* 让线条宽度自适应 */
-    margin-left: 40px;
+
     margin-bottom: 10px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }

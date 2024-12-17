@@ -8,12 +8,12 @@
             <div class="box2">
 
                 <div class="right">
-                    <el-button @click="dialogTableVisible = true">第1组</el-button>
-                    <el-button @click="dialogTableVisible = true">第2组</el-button>
-                    <el-button @click="dialogTableVisible = true">第3组</el-button>
-                    <el-button @click="dialogTableVisible = true">第4组</el-button>
-                    <el-button @click="dialogTableVisible = true">第5组</el-button>
-                    <el-button @click="dialogTableVisible = true">第6组</el-button>
+                    <el-button @click="showGroup(1)">第1组</el-button>
+                    <el-button @click="showGroup(2)">第2组</el-button>
+                    <el-button @click="showGroup(3)">第3组</el-button>
+                    <el-button @click="showGroup(4)">第4组</el-button>
+                    <el-button @click="showGroup(5)">第5组</el-button>
+                    <el-button @click="showGroup(6)">第6组</el-button>
                 </div>
             </div>
         </div>
@@ -89,6 +89,25 @@ export default {
         GoToStudentReport() {
             this.$router.push({ name: 'StudentReport' }); //
         },
+        async showGroup(num){
+            dialogTableVisible = true;
+            try{
+                // 接口
+                const response = await axios.get('http://127.0.0.1:4523/m1/5394050-5067403-default/report/weekly',
+                {
+                    group: num
+                },
+                {
+                    headers: {'Content-Type': 'application/json'},
+                })
+                this.gridData = response.data
+                console.log(this.gridData)
+            }
+            catch(error)
+            {
+                console.error(error);
+            }
+        }
     }
 }
 </script>
@@ -144,7 +163,7 @@ export default {
 
 .box2 {
     flex: 1;
-    margin-top: 10px;
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
