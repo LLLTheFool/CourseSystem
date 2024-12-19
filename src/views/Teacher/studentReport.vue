@@ -12,7 +12,7 @@
                         <el-button v-for="item in 20" :key="item" @click="getStu(item)" class="scrollbar-demo-item">第{{item }}周</el-button>
                     </el-scrollbar>
                     <div class="main">
-                        <div class="student" v-for="student in Stu" :key="student.ID">{{ student.Name }}</div>
+                        <div class="student" v-for="student in Stu" :key="student.ID">{{ getName(student) }}</div>
                     </div>
                 </div>
             </div>
@@ -35,20 +35,24 @@ export default {
     data() {
         return {
             path: '',
-            name: '张三',
             Stu:[
                 {
-                    ID: '',
-                    Week: '',
-                    Order: '',
-                    Name: '张三',
+                    ID: 1,
+                    Week: 1,
+                    Order: 1,
+                    Student: null
                 },
                 {
-                    ID: '',
-                    Week: '',
-                    Order: '',
-                    Name: '李四',
-                }
+                    ID: 2,
+                    Week: 1,
+                    Order: 2,
+                    Student: {
+                        StudentID: "20230101",
+                        Name: "Alice",
+                        Institute: "CS",
+                        Password: "123456"
+                    }
+                },
             ],
         }
     },
@@ -62,6 +66,12 @@ export default {
         }
     },
     methods: {
+        getName(student) {
+            if (student && student.Student) {
+                return student.Student.Name;
+            }
+            return '未填写'; // 返回一个默认值
+        },
         GoHome() {
             this.$router.push({ name: 'Home' }); // 跳转到登录页面
         },
@@ -91,7 +101,7 @@ export default {
             {
                 console.error(error);
             }
-        }
+        },
     }
 }
 </script>
