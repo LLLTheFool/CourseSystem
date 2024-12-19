@@ -95,15 +95,64 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue';
 import top from "../../components/topofstudent.vue"
 import Sidebar3 from "../../components/Sidebar3.vue";
-export default{
-    components:{
-        top,
-        Sidebar3
-    }
+
+// 组件引用
+const components = {
+  top,
+  Sidebar3
 }
+
+// 表单相关的数据
+const formVisible = ref(false);
+const formTitle = ref('');
+const tableData = ref([]);
+
+// 添加创建任务的处理方法
+const handleSelect = () => {
+  formVisible.value = true;
+  console.log("创建任务按钮被点击");
+};
+
+// 表单数据
+const form = ref({
+  subject: '',
+  description: '',
+  priority: '',
+  responsiblePerson: '',
+  leader: '',
+  date: ''
+});
+
+// 提交表单方法
+const submitForm = () => {
+  tableData.value.push({
+    subject: form.value.subject,
+    status: '新增',
+    assignee: form.value.responsiblePerson,
+    priority: form.value.priority
+  });
+  resetForm();
+};
+
+// 重置表单方法
+const resetForm = () => {
+  form.value = {
+    subject: '',
+    description: '',
+    priority: '',
+    responsiblePerson: '',
+    leader: '',
+    date: ''
+  };
+  formVisible.value = false;
+};
+
+// 活动标签页
+const activeTab = ref('workPackages');
 </script>
 
 <style scoped>
@@ -158,6 +207,9 @@ border-radius: 8px;
 width: 300px;
 background-color: white;
 z-index: 10;
+height: auto;
+min-height: 500px;
+padding-bottom: 60px;
 }
 
 .form-group {
@@ -259,7 +311,7 @@ font-weight: bold;
 
 .form-buttons {
 position: absolute;
-bottom: 20px;
+bottom: 10px;
 right: 10px;
 display: flex;
 gap: 10px;

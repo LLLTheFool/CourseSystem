@@ -68,6 +68,7 @@
   import { useRouter } from 'vue-router';  // 引入 useRouter
 import top from "../../components/topofstudent.vue"
 import SidebarForStu from "../../components/SidebarForStu.vue";
+import axios from 'axios';  // 确保已安装并导入 axios
 
 // 移除 export default，直接声明组件
 const components = {
@@ -89,9 +90,22 @@ const groups = ref([]);
   };
   
   // 创建组
-  const createGroup = (group) => {
-    console.log("创建组:", group);
-    group.isCreated = true;
+  const createGroup = async (group) => {
+    try {
+      const response = await axios.post('http://127.0.0.1:4523/m1/5394050-5067403-default/gruopInfo', {
+        groupName: group.name,
+        groupNumber: group.number
+      });
+      
+      if (response.data.success) {
+        group.isCreated = true;
+        console.log("创建组成功:", response.data);
+      } else {
+        console.error("创建组失败:", response.data.message || '未知错误');
+      }
+    } catch (error) {
+      console.error("创建组请求失败:", error.response?.data?.message || error.message);
+    }
   };
   
   // 加入组
