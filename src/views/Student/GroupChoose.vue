@@ -68,9 +68,9 @@
   import { useRouter } from 'vue-router';  // 引入 useRouter
 import top from "../../components/topofstudent.vue"
 import SidebarForStu from "../../components/SidebarForStu.vue";
-import axios from 'axios';  // 确保已安装并导入 axios
 
-// 移除 export default，直接声明组件
+import axios from 'axios'; 
+
 const components = {
   top,
   SidebarForStu

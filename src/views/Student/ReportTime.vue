@@ -39,7 +39,9 @@
 <script setup>
 import top from "../../components/topofstudent.vue"
 import SidebarForStu from "../../components/SidebarForStu.vue";
+
 import { ref, computed, onMounted } from 'vue';
+
 import axios from 'axios';
 
 // 移除 export default，改用 setup 语法
@@ -84,16 +86,16 @@ async function toggleButtonSelection(index) {
   } else {
     if (!isAnyButtonSelected.value) {
       try {
-        const response = await axios.post('http://127.0.0.1:4523/m1/5394050-5067403-default/report/choose?apifoxResponseId=undefined', {
-          studentid: stuid.value || '123',
-          week: groupNumber.value,
-          order: index + 1
+        const response = await axios.post('http://127.0.0.1:4523/m1/5394050-5067403-default/report/choose', {
+          studentid: String(stuid.value || '123'),
+          week: Number(groupNumber.value),
+          order: Number(index + 1)
         });
 
         console.log('发送的数据:', {
-          studentid: stuid.value || '123',
-          week: groupNumber.value,
-          order: index + 1
+          studentid: String(stuid.value || '123'),
+          week: Number(groupNumber.value),
+          order: Number(index + 1)
         });
 
         if (response.data.success) {
@@ -114,17 +116,32 @@ async function toggleButtonSelection(index) {
 async function fetchInitialData() {
   try {
     const response = await axios.get('http://127.0.0.1:4523/m1/5394050-5067403-default/report/weekly');
-    // 处理获取到的数据
-    if (response.data.success) {
-      // 更新按钮状态
-      // ... 根据后端返回的数据更新 buttons
+    console.log('获取到的初始数据:', response.data);
+    
+    if (response.data) {  // 检查是否有数据返回
+      // 遍历返回的数据，更新按钮状态
+      response.data.forEach(report => {
+        const weekIndex = report.Week - 1;
+        const orderIndex = report.Order - 1;
+        
+        // 确保索引有效
+        if (buttons.value[weekIndex] && buttons.value[weekIndex][orderIndex]) {
+          buttons.value[weekIndex][orderIndex].selected = true;
+          buttons.value[weekIndex][orderIndex].username = report.Student.Name;  // 使用学生的 Name
+          // 可以同时更新学号
+          stuid.value = report.Student.StudentID;
+        }
+      });
+      
+      console.log('按钮状态更新完成');
+    } else {
+      console.error("获取数据失败: 没有数据返回");
     }
   } catch (error) {
-    console.error("获取数据失败:", error);
+    console.error("获取数据失败:", error.response?.data?.message || error.message);
   }
 }
 
-// 在组件挂载时获取数据
 onMounted(() => {
   fetchInitialData();
 });
