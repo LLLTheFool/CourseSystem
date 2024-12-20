@@ -26,7 +26,7 @@
                   </div>
                   <div class="row">
                     <label>人数:</label>
-                    <span>{{ group.currentCount }}/{{ group.maxCount }}</span>
+                    <span>{{ group.currentCount || 0 }}/{{ group.maxCount || 10 }}</span>
                   </div>
                   <button
                     class="join-button"
@@ -41,26 +41,31 @@
             </div>
   
             <!-- 新创建的组（右侧） -->
-            <div v-if="newGroup" class="group-container new-group">
+            <div v-if="newGroup" 
+                 class="group-container"
+                 :class="{ 'new-group': !newGroup.isCreated, 'created': newGroup.isCreated }">
               <div class="group-info">
                 <div class="row">
                   <label>组名:</label>
-                  <input v-model="newGroup.name" placeholder="请输入组名"/>
+                  <input v-if="!newGroup.isCreated" 
+                         v-model="newGroup.name" 
+                         placeholder="请输入组名"/>
+                  <span v-else>{{ newGroup.name }}</span>
                 </div>
                 <div class="row">
                   <label>组号:</label>
                   <span>{{ newGroup.number }}</span>
                 </div>
                 <div class="row">
-                  <label>最大人数:</label>
-                  <span>10</span>
+                  <label>人数:</label>
+                  <span>{{ newGroup.currentCount || 1 }}/{{ newGroup.maxCount || 10 }}</span>
                 </div>
                 <button
                   class="join-button"
                   @click="createGroup(newGroup)"
-                  :disabled="!newGroup.name"
+                  :disabled="!newGroup.name || newGroup.isCreated"
                 >
-                  创建
+                  {{ newGroup.isCreated ? '已加入' : '创建' }}
                 </button>
               </div>
             </div>
@@ -75,10 +80,11 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import top from "../../components/topofstudent.vue"
 import SidebarForStu from "../../components/SidebarForStu.vue";
+import { ElMessage } from 'element-plus';  
 
 const groups = ref([]);
-const newGroup = ref(null);  // 新创建的组
-const studentId = ref('123'); // 这里应该从登录信息或其他地方获取实际的学生ID
+const newGroup = ref(null);  
+const studentId = ref('123'); 
 
 // 获取所有组信息
 const fetchGroupInfo = async () => {
@@ -92,8 +98,8 @@ const fetchGroupInfo = async () => {
       groups.value = [{
         name: group.GroupName,
         number: group.GroupID,
-        currentCount: 1,
-        maxCount: group.GroupMemberNumber || 10,
+        currentCount: Number(group.GroupMemberNumber),  
+        maxCount: Number(group.GroupMaxMember),          
         isJoined: false,
         isCreated: true
       }];
@@ -103,13 +109,14 @@ const fetchGroupInfo = async () => {
         .map(group => ({
           name: group.GroupName,
           number: group.GroupID,
-          currentCount: 1,
-          maxCount: group.GroupMemberNumber || 10,
+          currentCount: Number(group.GroupCurrentMember),  
+          maxCount: Number(group.GroupMaxMember),          
           isJoined: false,
           isCreated: true
         }))
         .sort((a, b) => a.number - b.number);
     }
+    console.log("处理后的组信息:", groups.value);  
   } catch (error) {
     console.error("获取组信息失败:", error);
   }
@@ -131,64 +138,110 @@ const addGroup = () => {
   };
 };
 
-// 创建组
+// 修改创建组的方法
 const createGroup = async (group) => {
   try {
     if (!group.name) {
-      console.error("请输入组名");
+      ElMessage({
+        message: '请输入组名',
+        type: 'warning'
+      });
       return;
     }
 
-    const response = await axios.post('http://127.0.0.1:4523/m1/5394050-5067403-default/group/add_group', {
+    const requestBody = {
       GroupName: group.name,
-      GroupMaxMember: 10
-    });
+      GroupID: String(group.number),
+      GroupMaxMember: 10,
+      GroupCurrentMember: 1
+    };
+
+    console.log("发送的请求数据:", requestBody);
+
+    const response = await axios.post('http://127.0.0.1:4523/m1/5394050-5067403-default/group/add_group', requestBody);
     
-    if (response.data && response.data.message === "Creat Group successful!") {
-      const createdGroup = {
-        name: group.name,
-        number: response.data.GroupID,
-        currentCount: 1,
-        maxCount: 10,
-        isJoined: true,
-        isCreated: true
-      };
+    if (response.data && response.data.GroupID) {  
+      ElMessage({
+        message: '创建组成功！',
+        type: 'success'
+      });
+
+      // 使用返回的数据更新组状态
+      group.isCreated = true;
+      group.name = response.data.GroupName;
+      group.number = response.data.GroupID;
+      group.currentCount = response.data.GroupCurrentMember;
+      group.maxCount = response.data.GroupMaxMember;
+      group.isJoined = true;
       
-      groups.value.push(createdGroup);
-      groups.value.sort((a, b) => a.number - b.number);
+      setTimeout(() => {
+        groups.value.push({...group});
+        groups.value.sort((a, b) => Number(a.number) - Number(b.number));
+        newGroup.value = null;
+      }, 500);
       
-      newGroup.value = null;
-      console.log("创建组成功:", response.data);
-      
-      await fetchGroupInfo();
+      console.log("创建组成功，返回数据:", response.data);
+    } else {
+      ElMessage({
+        message: '创建组失败',
+        type: 'error'
+      });
+      console.error("创建组失败，返回数据:", response.data);
     }
   } catch (error) {
-    console.error("创建组失败:", error);
+    ElMessage({
+      message: error.response?.data?.message || '创建组请求失败',
+      type: 'error'
+    });
+    console.error("创建组失败:", error.response || error);
   }
 };
 
-// 加入组
+// 修改加入组的方法
 const joinGroup = async (group) => {
   if (group.currentCount >= group.maxCount) {
-    console.error("该组已满");
+    ElMessage({
+      message: '该组已满',
+      type: 'warning'
+    });
     return;
   }
 
   try {
-    const response = await axios.post('http://127.0.0.1:4523/m1/5394050-5067403-default/group/join_group', {
-      GroupID: group.number,    // 使用组号作为 GroupID
-      StudentID: studentId.value // 传递学生ID
-    });
+    // 修改请求体格式
+    const requestBody = {
+      GroupMemberNumber: group.currentCount + 1,  // 当前人数加1
+      StuGroupID: String(group.number)           // 使用组号作为 StuGroupID
+    };
+
+    console.log("发送的加入组请求数据:", requestBody);
+
+    const response = await axios.get('http://127.0.0.1:4523/m1/5394050-5067403-default/group/join_group', requestBody);
     
-    if (response.data && response.data.message === "Join Group successful!") {
-      group.isJoined = true;
-      group.currentCount++;
-      console.log("加入组成功:", {
-        groupId: group.number,
-        studentId: studentId.value
+    // 修改成功判断条件
+    if (response.data) {
+      ElMessage({
+        message: '加入组成功！',
+        type: 'success'
       });
+      
+      // 更新组状态
+      group.isJoined = true;
+      group.currentCount = response.data.GroupMemberNumber;  // 使用返回的人数
+      
+      console.log("加入组成功，返回数据:", response.data);
+    } else {
+      ElMessage({
+        message: response.data?.message || '加入组失败',
+        type: 'error'
+      });
+      console.error("加入组失败，返回数据:", response.data);
     }
   } catch (error) {
+    ElMessage({
+      message: error.response?.data?.message || '加入组请求失败',
+      type: 'error'
+    });
     console.error("加入组失败:", error);
   }
 };
@@ -233,7 +286,7 @@ onMounted(() => {
     z-index: 10;
   }
   
-  /* 组容器样式 */
+  /* 组容器础样式 */
   .group-container {
     margin: 20px;
     padding: 10px;
@@ -242,7 +295,10 @@ onMounted(() => {
     background-color: #f9f9f9;
     width: 180px;
     box-sizing: border-box;
-    transition: all 0.3s ease;  /* 添加过渡效果 */
+    position: absolute;  /* 恢复为 absolute 定位 */
+    right: 50px;
+    top: 100px;
+    transition: all 0.3s ease;
   }
   
   /* 新创建的组容器样式 */
@@ -250,11 +306,14 @@ onMounted(() => {
     position: absolute;
     right: 50px;
     top: 100px;
+    z-index: 100;
   }
   
   /* 已创建的组容器样式 */
   .group-container.created {
     position: relative;
+    right: auto;
+    top: auto;
     background-color: #f0f8ff;
   }
   
@@ -299,7 +358,7 @@ onMounted(() => {
   .join-button {
     background-color: #008cba;
     color: white;
-    margin: 0 auto; /* 水平方向 margin 自动分配，实现水平居中 */
+    margin: 0 auto; /* 水平方向 margin 自分配，实现水平居中 */
     width:75px;
     height: 35px;
   }
@@ -318,9 +377,10 @@ onMounted(() => {
   
   .group-list {
     display: flex;
-    width: 100%;
-    position: relative;
+    flex-wrap: wrap;
+    gap: 20px;
     padding-top: 60px;
+    justify-content: flex-start;
   }
   
   .existing-groups {
@@ -329,6 +389,7 @@ onMounted(() => {
     gap: 20px;
     padding-left: 20px;
     flex: 1;
+    min-height: 300px;  /* 确保有足够的空间 */
   }
   
   /* 修改输入框样式 */
