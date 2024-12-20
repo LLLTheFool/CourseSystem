@@ -48,10 +48,11 @@
                 <label for="responsible-person">受理人</label>
                 <select v-model="form.responsiblePerson" id="responsible-person" required>
                   <option value="" disabled>请选择</option>
-                  <option value="组员1">组员1</option>
-                  <option value="组员2">组员2</option>
-                  <option value="组员3">组员3</option>
-                  <option value="组员4">组员4</option>
+                  <option v-for="member in memberList" 
+                          :key="member.id" 
+                          :value="member.name">
+                    {{ member.name }}
+                  </option>
                 </select>
               </div>
 
@@ -59,10 +60,11 @@
                 <label for="leader">负责人</label>
                 <select v-model="form.leader" id="leader" required>
                   <option value="" disabled>请选择</option>
-                  <option value="组员1">组员1</option>
-                  <option value="组员2">组员2</option>
-                  <option value="组员3">组员3</option>
-                  <option value="组员4">组员4</option>
+                  <option v-for="member in memberList" 
+                          :key="member.id" 
+                          :value="member.name">
+                    {{ member.name }}
+                  </option>
                 </select>
               </div>
 
@@ -111,6 +113,25 @@ const components = {
 const formVisible = ref(false);
 const formTitle = ref('');
 const tableData = ref([]);
+
+// 添加组员列表数据
+const memberList = ref([]);
+
+// 添加获取组员列表的方法
+const fetchMemberList = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:4523/m1/5394050-5067403-default/workpackage/members');
+    
+    if (response.data.success) {
+      memberList.value = response.data.data.members;
+      console.log("获取组员列表成功:", response.data);
+    } else {
+      console.error("获取组员列表失败:", response.data.message);
+    }
+  } catch (error) {
+    console.error("获取组员列表请求失败:", error.response?.data?.message || error.message);
+  }
+};
 
 // 添加创建任务的处理方法
 const handleSelect = () => {
@@ -177,6 +198,7 @@ const fetchTaskList = async () => {
 // 在组件挂载时获取任务列表
 onMounted(() => {
   fetchTaskList();
+  fetchMemberList();  // 获取组员列表
 });
 
 // 重置表单方法
