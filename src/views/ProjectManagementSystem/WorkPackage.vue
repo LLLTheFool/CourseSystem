@@ -96,7 +96,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import axios from 'axios';  // 确保导入 axios
 import top from "../../components/topofstudent.vue"
 import Sidebar3 from "../../components/Sidebar3.vue";
 
@@ -127,16 +128,56 @@ const form = ref({
   date: ''
 });
 
-// 提交表单方法
-const submitForm = () => {
-  tableData.value.push({
-    subject: form.value.subject,
-    status: '新增',
-    assignee: form.value.responsiblePerson,
-    priority: form.value.priority
-  });
-  resetForm();
+// 修改提交表单方法，添加后端交互
+const submitForm = async () => {
+  try {
+    const response = await axios.post('http://127.0.0.1:4523/m1/5394050-5067403-default/workpackage/create', {
+      subject: form.value.subject,
+      description: form.value.description,
+      responsiblePerson: form.value.responsiblePerson,
+      leader: form.value.leader,
+      priority: form.value.priority,
+      date: form.value.date
+    });
+
+    if (response.data.success) {
+      // 添加到表格数据
+      tableData.value.push({
+        subject: form.value.subject,
+        status: '新增',
+        assignee: form.value.responsiblePerson,
+        priority: form.value.priority
+      });
+      console.log("创建任务成功:", response.data);
+      resetForm();
+    } else {
+      console.error("创建任务失败:", response.data.message);
+    }
+  } catch (error) {
+    console.error("创建任务请求失败:", error.response?.data?.message || error.message);
+  }
 };
+
+// 添加获取任务列表的方法
+const fetchTaskList = async () => {
+  try {
+    const response = await axios.get('http://127.0.0.1:4523/m1/5394050-5067403-default/workpackage/list');
+    
+    if (response.data.success) {
+      tableData.value = response.data.data.tasks;
+      console.log("获取任务列表成功:", response.data);
+    } else {
+      console.error("获取任务列表失败:", response.data.message);
+    }
+  } catch (error) {
+    console.error("获取任务列表请求失败:", error.response?.data?.message || error.message);
+  }
+};
+
+// 在组件挂载时获取任务列表
+onMounted(() => {
+  fetchTaskList();
+});
 
 // 重置表单方法
 const resetForm = () => {
